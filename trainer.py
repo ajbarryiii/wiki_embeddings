@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import nn.functional as F
 from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, DataCollatorForLanguageModeling
 from typing import Optional, Any, List, Dict
@@ -93,7 +94,6 @@ class MLMTrainer:
                 'running_losses': self.running_losses,
                 'steps': self.steps,
                 'timestamp': datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
-                'config': self.config
             }
             
             with open(checkpoint_path / 'training_state.json', 'w') as f:
@@ -310,7 +310,7 @@ class MLMTrainer:
                         
                         # Plot current progress
                         if total_steps % (log_interval * 5) == 0:  # Plot every 500 steps
-                            self.plot_losses(show=True)  # Save but don't show
+                            self.plot_losses()  # Save but don't show
                         
                         running_loss = 0.0
 
@@ -333,7 +333,7 @@ class MLMTrainer:
                     raise e
             
             # End of epoch logging
-            avg_epoch_loss = epoch_loss / len(dataloader)
+            avg_epoch_loss = epoch_loss / (total_steps//epoch)
             self.train_losses.append(avg_epoch_loss)
             self.epochs.append(epoch + 1)
             

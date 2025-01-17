@@ -5,7 +5,7 @@ from model import Encoder, Decoder
 from trainer import MLMTrainer
 
 def main():
-    # Initialize the encoder and decoder (e.g., using BERT for both)
+    # Initialize the encoder and decoder 
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
     encoder = Encoder(vocab_size=tokenizer.vocab_size, embed_size=768, num_heads=12, forward_expansion=4, dropout=0.1, num_layers=6, latent_dim=128)
     decoder = Decoder(vocab_size=tokenizer.vocab_size, embed_size=768, num_heads=12, forward_expansion=4, dropout=0.1, num_layers=6, latent_dim=128)
